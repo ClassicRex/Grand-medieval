@@ -27,4 +27,4 @@ Cinematic Atmosphere: Bliss Shaders provide dynamic fog and realistic metallic r
 
 > The dragon does not fear the man... until he sees the Dragonsteel Spartan blade in his hand.
 
-FOR CONTACT COMMING SOON !!
+FOR CONTACT https://grand-medieval-p1xqpfkmr-classicrexs-projects.vercel.app
