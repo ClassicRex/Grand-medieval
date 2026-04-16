@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Medieval — Community Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dark: #8b6914;
+    --parchment: #f5edd8;
+    --parchment-dark: #e8d9b8;
+    --ink: #1c1410;
+    --ink-mid: #3d2f1e;
+    --ink-light: #6b5040;
+    --stone: #2a2318;
+    --stone-mid: #3d3426;
+    --stone-light: #5a4f3a;
+    --crimson: #8b1a1a;
+    --crimson-light: #b52222;
+    --shadow: rgba(0,0,0,0.5);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--stone);
+    color: var(--parchment);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(0,0,0,0.08) 79px, rgba(0,0,0,0.08) 80px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(0,0,0,0.05) 79px, rgba(0,0,0,0.05) 80px);
+  }
+
+  /* NAV */
+  nav {
+    background: linear-gradient(to bottom, #0d0b08, var(--stone));
+    border-bottom: 2px solid var(--gold-dark);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo::before {
+    content: '⚔';
+    font-size: 18px;
+    color: var(--gold-light);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--parchment-dark);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.15) 0%, transparent 70%);
+  }
+
+  .hero-crest {
+    font-size: 56px;
+    margin-bottom: 1rem;
+    display: block;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 4px;
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(201,168,76,0.4), 0 0 60px rgba(201,168,76,0.15);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-desc {
+    font-size: 19px;
+    font-style: italic;
+    color: var(--parchment-dark);
+    max-width: 580px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 400px;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold-dark), transparent);
+  }
+
+  .divider-gem {
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .badge {
+    padding: 6px 16px;
+    border: 1px solid var(--gold-dark);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+    background: rgba(201,168,76,0.08);
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    margin-top: 6px;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(to right, var(--gold-dark), transparent);
+  }
+
+  .section-intro {
+    color: var(--parchment-dark);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-size: 16px;
+  }
+
+  /* MODS */
+  .mod-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mod-category {
+    background: var(--stone-mid);
+    border: 1px solid var(--stone-light);
+    border-top: 2px solid var(--gold-dark);
+    border-radius: 2px;
+    padding: 1.25rem;
+  }
+
+  .mod-category-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mod-category-title span {
+    font-size: 16px;
+  }
+
+  .mod-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .mod-list li {
+    font-size: 14px;
+    color: var(--parchment-dark);
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(90,79,58,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mod-list li::before {
+    content: '▸';
+    color: var(--gold-dark);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .mod-list li:last-child { border-bottom: none; }
+
+  /* FORM */
+  .form-wrap {
+    background: var(--stone-mid);
+    border: 1px solid var(--stone-light);
+    border-top: 3px solid var(--gold);
+    border-radius: 2px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .field-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .field-group label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 8px;
+  }
+
+  .field-group input,
+  .field-group textarea,
+  .field-group select {
+    width: 100%;
+    background: var(--stone);
+    border: 1px solid var(--stone-light);
+    border-radius: 2px;
+    padding: 10px 14px;
+    color: var(--parchment);
+    font-family: 'Crimson Text', serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field-group input:focus,
+  .field-group textarea:focus,
+  .field-group select:focus {
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+
+  .field-group textarea { height: 110px; resize: vertical; }
+
+  .field-group input::placeholder,
+  .field-group textarea::placeholder {
+    color: var(--stone-light);
+    font-style: italic;
+  }
+
+  .star-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .star {
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--stone-light);
+    transition: color 0.1s, transform 0.1s;
+    line-height: 1;
+  }
+
+  .star.lit { color: var(--gold); }
+  .star:hover { transform: scale(1.2); color: var(--gold-light); }
+
+  .tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag {
+    padding: 5px 14px;
+    border: 1px solid var(--stone-light);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: var(--parchment-dark);
+    transition: all 0.15s;
+  }
+
+  .tag.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.15);
+    color: var(--gold-light);
+  }
+
+  .submit-btn {
+    padding: 12px 32px;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    width: 100%;
+  }
+
+  .submit-btn:hover {
+    background: var(--gold);
+    color: var(--stone);
+  }
+
+  .submit-btn:active { transform: scale(0.99); }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    background: rgba(139,26,26,0.2);
+    border: 1px solid var(--crimson);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #d47c7c;
+  }
+
+  /* WALL */
+  .reviews-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .review-card {
+    background: var(--stone-mid);
+    border: 1px solid var(--stone-light);
+    border-left: 3px solid var(--gold-dark);
+    border-radius: 2px;
+    padding: 1.25rem 1.5rem;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .review-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 2px;
+    background: var(--stone);
+    border: 1px solid var(--gold-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .review-meta { flex: 1; }
+
+  .review-name {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--gold-light);
+    font-weight: 600;
+  }
+
+  .review-stars {
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .review-text {
+    font-size: 16px;
+    font-style: italic;
+    color: var(--parchment-dark);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .review-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .review-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--gold-dark);
+    border-radius: 2px;
+    color: var(--gold-dark);
+    text-transform: uppercase;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--stone-light);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+  }
+
+  footer p {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--stone-light);
+  }
+
+  footer a {
+    color: var(--gold-dark);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--gold); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--stone); }
+  ::-webkit-scrollbar-thumb { background: var(--stone-light); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Grand Medieval</a>
+  <ul class="nav-links">
+    <li><a href="#mods">The Mods</a></li>
+    <li><a href="#review">Leave Review</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <span class="hero-crest">🏰</span>
+  <div class="hero-subtitle">A Minecraft Modpack</div>
+  <h1 class="hero-title">Grand Medieval</h1>
+  <div class="hero-divider"><div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div></div>
+  <p class="hero-desc">"Forge your legend. Build your kingdom. Face monsters of myth and fire — this is Grand Medieval."</p>
+  <div class="badge-row">
+    <span class="badge">⚔ Combat Overhaul</span>
+    <span class="badge">🐉 Ice & Fire</span>
+    <span class="badge">🏰 Epic Structures</span>
+    <span class="badge">🌿 Farmer's Delight</span>
+    <span class="badge">✨ Spells & Sorcery</span>
+    <span class="badge">🛡 60+ Mods</span>
+  </div>
+</section>
+
+<!-- MODS -->
+<section class="section" id="mods">
+  <h2 class="section-title">The Arsenal of Mods</h2>
+  <p class="section-intro">Every mod hand-picked to craft an authentic medieval adventure. From combat to creatures, castles to cuisine.</p>
+
+  <div class="mod-categories">
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>⚔️</span> Combat & Weapons</div>
+      <ul class="mod-list">
+        <li>Better Combat</li>
+        <li>Epic Fight</li>
+        <li>Epic Knights: Shields, Armor & Weapons</li>
+        <li>Simply Swords</li>
+        <li>Spartan Shields</li>
+        <li>Spartan Weaponry</li>
+        <li>Spartan Weaponry: Ice and Fire</li>
+        <li>Spartan Weaponry Addon Toolkit</li>
+        <li>Iron's Spells 'n Spellbooks</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>🐉</span> Creatures & Mobs</div>
+      <ul class="mod-list">
+        <li>Alex's Mobs</li>
+        <li>Ice and Fire</li>
+        <li>Born in Chaos</li>
+        <li>Aquamirae</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>🏰</span> Structures & World</div>
+      <ul class="mod-list">
+        <li>Antique Atlas 4</li>
+        <li>AA4 Atlas</li>
+        <li>Surveystones</li>
+        <li>Ember's Castles And Keeps</li>
+        <li>Towns and Towers</li>
+        <li>When Dungeons Arise</li>
+        <li>Medieval Paintings</li>
+        <li>Small Ships</li>
+        <li>Toni's Immersive Lanterns</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>🎨</span> Visuals & Animations</div>
+      <ul class="mod-list">
+        <li>Bliss Shaders</li>
+        <li>Fresh Animations</li>
+        <li>Fresh Animations: Extensions</li>
+        <li>Fresh Moves</li>
+        <li>Oculus</li>
+        <li>Embeddium</li>
+        <li>Motschen's Better Leaves</li>
+        <li>Cubic Sun & Moon</li>
+        <li>Enchantment Outlines</li>
+        <li>Enchant Icons</li>
+        <li>CIT Resewn</li>
+        <li>playerAnimator</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>🍖</span> Survival & RPG</div>
+      <ul class="mod-list">
+        <li>Farmer's Delight</li>
+        <li>AppleSkin</li>
+        <li>Accessories</li>
+        <li>Curios API</li>
+        <li>Corpse</li>
+        <li>Medieval Armory</li>
+        <li>RPG-HUD</li>
+        <li>InventoryHUD+</li>
+        <li>Recolourful Containers GUI + HUD</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>📜</span> Utility & QoL</div>
+      <ul class="mod-list">
+        <li>Melody</li>
+        <li>Mouse Tweaks</li>
+      </ul>
+    </div>
+
+    <div class="mod-category">
+      <div class="mod-category-title"><span>⚙️</span> Performance & APIs</div>
+      <ul class="mod-list">
+        <li>Architectury API</li>
+        <li>Canary</li>
+        <li>FerriteCore</li>
+        <li>ModernFix</li>
+        <li>Starlight (Forge)</li>
+        <li>Sodium Dynamic Lights</li>
+        <li>Sodium Options API</li>
+        <li>Geckolib</li>
+        <li>Citadel</li>
+        <li>Cloth Config API</li>
+        <li>Cristel Lib</li>
+        <li>Iron's Lib</li>
+        <li>Konkrete</li>
+        <li>TxniLib</li>
+        <li>Obscure API</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- REVIEW FORM -->
+<section class="section" id="review">
+  <h2 class="section-title">Leave Your Mark</h2>
+  <p class="section-intro">Your words reach the creator directly. Tell me what you love, what's missing, or what could be better — every scroll is read.</p>
+
+  <div class="form-wrap">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="field-group">
+        <label>Minecraft Username</label>
+        <input type="text" id="username" placeholder="e.g. KnightOfTheDawn" />
+      </div>
+      <div class="field-group">
+        <label>Playing on version</label>
+        <select id="version">
+          <option value="">— Select —</option>
+          <option>1.20.1 (current)</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Your Overall Rating</label>
+      <div class="star-row" id="stars">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>What are you reviewing?</label>
+      <div class="tag-grid" id="area-tags">
+        <div class="tag" data-tag="Combat feel">⚔ Combat feel</div>
+        <div class="tag" data-tag="Creatures & mobs">🐉 Creatures & mobs</div>
+        <div class="tag" data-tag="Structures & world">🏰 Structures</div>
+        <div class="tag" data-tag="Quests & progression">📜 Quests</div>
+        <div class="tag" data-tag="Performance">⚙ Performance</div>
+        <div class="tag" data-tag="Visuals">🎨 Visuals</div>
+        <div class="tag" data-tag="Missing mods">✦ Missing mods</div>
+        <div class="tag" data-tag="Bugs">🐛 Bugs</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Your Review or Suggestion</label>
+      <textarea id="review-text" placeholder="Type whatever you want — only the owner will see this!"></textarea>
+    </div>
+
+    <button class="submit-btn" onclick="submitReview()">⚔ Send to the Creator ⚔</button>
+    <div class="success-msg" id="success">✦ Your message has been sent to the creator. Thank you! ✦</div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="hero-divider" style="max-width:300px;margin:0 auto 1.5rem;">
+    <div class="divider-line"></div><div class="divider-gem"></div><div class="divider-line"></div>
+  </div>
+  <p>Grand Medieval · A Minecraft Modpack · Available on <a href="https://modrinth.com/modpack/grand-medieval" target="_blank">Modrinth</a></p>
+  <p style="margin-top:0.5rem;">Made with ❤ for the community</p>
+</footer>
+
+<script>
+  let rating = 0;
+  let selectedTags = [];
+
+
+
+  function initStars() {
+    document.querySelectorAll('.star').forEach(s => {
+      s.addEventListener('mouseover', () => lightStars(+s.dataset.v));
+      s.addEventListener('mouseleave', () => lightStars(rating));
+      s.addEventListener('click', () => { rating = +s.dataset.v; lightStars(rating); });
+    });
+  }
+
+  function lightStars(n) {
+    document.querySelectorAll('.star').forEach(s => {
+      s.classList.toggle('lit', +s.dataset.v <= n);
+    });
+  }
+
+  function initTags() {
+    document.querySelectorAll('#area-tags .tag').forEach(t => {
+      t.addEventListener('click', () => {
+        const tag = t.dataset.tag;
+        if (selectedTags.includes(tag)) {
+          selectedTags = selectedTags.filter(x => x !== tag);
+          t.classList.remove('selected');
+        } else {
+          selectedTags.push(tag);
+          t.classList.add('selected');
+        }
+      });
+    });
+  }
+
+  function submitReview() {
+    const name = document.getElementById('username').value.trim();
+    const text = document.getElementById('review-text').value.trim();
+    const version = document.getElementById('version').value || 'Not specified';
+    if (!name) { document.getElementById('username').focus(); return; }
+    if (!rating) { alert('Please rate the pack with stars!'); return; }
+    if (!text) { document.getElementById('review-text').focus(); return; }
+
+    const stars = '⭐'.repeat(rating);
+    const tagsText = selectedTags.length ? selectedTags.join(', ') : 'None selected';
+
+    const webhookURL = 'https://discord.com/api/webhooks/1490111336980545548/FMDjsgHEPtiv8n5GhgUpBGVXfyQvresYUPQPyPpaYfinw7GH2bUyvRsmFuXmcwvs5zUl';
+
+    const payload = {
+      embeds: [{
+        title: '🏰 New Review — Grand Medieval',
+        color: 0xc9a84c,
+        fields: [
+          { name: '👤 Player', value: name, inline: true },
+          { name: '⭐ Rating', value: stars, inline: true },
+          { name: '🎮 Version', value: version, inline: true },
+          { name: '🏷 Areas', value: tagsText, inline: false },
+          { name: '📜 Review', value: text, inline: false },
+        ],
+        footer: { text: 'Grand Medieval Community Hub' },
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    fetch(webhookURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById('username').value = '';
+    document.getElementById('review-text').value = '';
+    document.getElementById('version').selectedIndex = 0;
+    rating = 0;
+    selectedTags = [];
+    lightStars(0);
+    document.querySelectorAll('#area-tags .tag').forEach(t => t.classList.remove('selected'));
+
+    const msg = document.getElementById('success');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 4000);
+  }
+
+  initStars();
+  initTags();
+</script>
+
+</body>
+</html>
